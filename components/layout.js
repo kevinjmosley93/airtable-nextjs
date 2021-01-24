@@ -1,17 +1,18 @@
 import Head from 'next/head'
 import Header from './header'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function Layout({ user, loading = false, children }) {
   return (
     <>
       <Head>
-        <title>Next.js with Auth0</title>
+        <title>Next App with Auth0 & Airtable</title>
       </Head>
 
       <Header user={user} loading={loading} />
 
       <main>
-        <div className="container">{children}</div>
+        <div className='container'>{children}</div>
       </main>
 
       <style jsx>{`

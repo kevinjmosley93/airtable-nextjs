@@ -1,80 +1,46 @@
-import Link from 'next/link'
+import { Navbar, Nav } from 'react-bootstrap'
 
 function Header({ user, loading }) {
   return (
-    <header>
-      <nav>
-        <ul>
-          <li>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/about">
-              <a>About</a>
-            </Link>
-          </li>
+    <Navbar bg='light' expand='lg'>
+      <Navbar.Brand href='#home'>React-Bootstrap</Navbar.Brand>
+      <Navbar.Toggle aria-controls='basic-navbar-nav' />
+      <Navbar.Collapse id='basic-navbar-nav'>
+        <Nav className='mr-auto'>
+          <Nav.Link href='/'>Home</Nav.Link>
+          <Nav.Link href='/about'>About</Nav.Link>
           {!loading &&
             (user ? (
               <>
-                <li>
-                  <Link href="/profile">
-                    <a>Client-rendered profile</a>
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/advanced/ssr-profile">
-                    <a>Server rendered profile (advanced)</a>
-                  </Link>
-                </li>
-                <li>
-                  <a href="/api/logout">Logout</a>
-                </li>
+                <Nav.Link href='/profile'>Client-rendered profile</Nav.Link>
+                <Nav.Link href='/advanced/ssr-profile'>
+                  Server rendered profile
+                </Nav.Link>
+                <Nav.Link href='/api/logout'>Logout</Nav.Link>
               </>
             ) : (
-              <li>
-                <a href="/api/login">Login</a>
-              </li>
+              <Nav.Link href='/api/login'>Login</Nav.Link>
             ))}
-        </ul>
-      </nav>
+        </Nav>
+      </Navbar.Collapse>
+    </Navbar>
 
-      <style jsx>{`
-        header {
-          padding: 0.2rem;
-          color: #fff;
-          background-color: #333;
-        }
-        nav {
-          max-width: 42rem;
-          margin: 1.5rem auto;
-        }
-        ul {
-          display: flex;
-          list-style: none;
-          margin-left: 0;
-          padding-left: 0;
-        }
-        li {
-          margin-right: 1rem;
-        }
-        li:nth-child(2) {
-          margin-right: auto;
-        }
-        a {
-          color: #fff;
-          text-decoration: none;
-        }
-        button {
-          font-size: 1rem;
-          color: #fff;
-          cursor: pointer;
-          border: none;
-          background: none;
-        }
-      `}</style>
-    </header>
+    // <header>
+    //   <nav>
+    //     <ul>
+    //       <li>
+    //         <Link href='/'>
+    //           <a>Home</a>
+    //         </Link>
+    //       </li>
+    //       <li>
+    //         <Link href='/about'>
+    //           <a>About</a>
+    //         </Link>
+    //       </li>
+    //     </ul>
+    //   </nav>
+    // </header >
   )
 }
 
