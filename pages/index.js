@@ -1,9 +1,9 @@
 import Layout from '../components/layout'
 import { useFetchUser } from '../lib/user'
 
-function Home() {
+export default function Home({ todos }) {
   const { user, loading } = useFetchUser()
-
+  // console.log('this is todo', todos)
   return (
     <Layout user={user} loading={loading}>
       <h1>Next.js and Auth0 Example</h1>
@@ -25,7 +25,7 @@ function Home() {
       {user && (
         <>
           <h4>Rendered user info on the client</h4>
-          <img src={user.picture} alt="user picture" />
+          <img src={user.picture} alt='user picture' />
           <p>nickname: {user.nickname}</p>
           <p>name: {user.name}</p>
         </>
@@ -33,5 +33,3 @@ function Home() {
     </Layout>
   )
 }
-
-export default Home
