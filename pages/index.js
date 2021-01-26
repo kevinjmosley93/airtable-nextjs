@@ -1,12 +1,17 @@
 import Layout from '../components/layout'
 import { useFetchUser } from '../lib/user'
 
-export default function Home({ todos }) {
+export default function Home({ data }) {
   const { user, loading } = useFetchUser()
-  // console.log('this is todo', todos)
+
   return (
     <Layout user={user} loading={loading}>
       <h1>Next.js and Auth0 Example</h1>
+
+      {data.map(d => {
+        console.log('this is data', d)
+        return <h1 key={d.id}></h1>
+      })}
 
       {loading && <p>Loading login info...</p>}
 
@@ -32,4 +37,20 @@ export default function Home({ todos }) {
       )}
     </Layout>
   )
+}
+
+export async function getServerSideProps(context) {
+  // console.log('this is context', context)
+  const res = await fetch(`${context.req.headers.referer}api/airtable`)
+  const data = await res.json()
+
+  if (!data) {
+    return {
+      notFound: true
+    }
+  }
+
+  return {
+    props: { data } // will be passed to the page component as props
+  }
 }
