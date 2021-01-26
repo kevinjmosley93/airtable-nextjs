@@ -41,7 +41,7 @@ export default function Home({ data }) {
 
 export async function getServerSideProps(context) {
   // console.log('this is context', context)
-  const res = await fetch(`${context.req.headers.referer}api/airtable`)
+  const res = await fetch(`${context.req.headers.referer}api/get-info`)
   const data = await res.json()
 
   if (!data) {
