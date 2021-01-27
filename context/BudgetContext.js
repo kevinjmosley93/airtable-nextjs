@@ -1,7 +1,7 @@
 import React, { createContext, useState } from 'react'
 export const BudgetContext = createContext()
 
-export const BudgetProvider = ({ chidren }) => {
+export const BudgetProvider = ({ children }) => {
   const [budget, setBudget] = useState([])
 
   const getBudget = async () => {
@@ -36,7 +36,7 @@ export const BudgetProvider = ({ chidren }) => {
         deleteBudget,
         addBudget
       }}>
-      {chidren}
+      {children}
     </BudgetContext.Provider>
   )
 }
