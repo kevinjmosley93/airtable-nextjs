@@ -1,12 +1,25 @@
 import React, { createContext, useState } from 'react'
-export const BudgetContext = createContext()
+const BudgetContext = createContext()
 
-export const BudgetProvider = ({ children }) => {
+const BudgetProvider = ({ children }) => {
   const [budget, setBudget] = useState([])
+  const [newBud, setNewBud] = useState([])
+
+  const newBudget = budget.map(res => {
+    return {
+      id: res.id,
+      fields: {
+        endOfMonth: res.fields.endOfMonth,
+        netIncome: res.fields.netIncome,
+        netExpenses: res.fields.netExpenses,
+        name: res.fields.name
+      }
+    }
+  })
 
   const getBudget = async () => {
     try {
-      const res = await fetch('/api/get-info')
+      const res = await fetch('/api/get-budget')
       const latestBudget = await res.json()
       setBudget(latestBudget)
     } catch (err) {
@@ -30,13 +43,16 @@ export const BudgetProvider = ({ children }) => {
     <BudgetContext.Provider
       value={{
         budget,
+        newBud,
+        newBudget,
+        setNewBud,
         setBudget,
         getBudget,
-        updateBudget,
-        deleteBudget,
         addBudget
       }}>
       {children}
     </BudgetContext.Provider>
   )
 }
+
+export { BudgetProvider, BudgetContext }

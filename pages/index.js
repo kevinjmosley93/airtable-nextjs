@@ -1,11 +1,21 @@
-import { Fragment } from 'react'
+import { useContext, useEffect } from 'react'
 import Layout from '../components/layout'
 import { useFetchUser } from '../lib/user'
-import NumberFormat from 'react-number-format'
-import { Button, Card, Col, Row } from 'react-bootstrap'
+import Data from '../components/data'
+import { BudgetContext } from '../contexts/BudgetContext'
 
 export default function Home({ data }) {
   const { user, loading } = useFetchUser()
+  const { budget, setBudget, newBud, setNewBud, newBudget } = useContext(
+    BudgetContext
+  )
+  useEffect(() => {
+    setBudget(data)
+    budget.length > 0 && setNewBud(newBudget)
+  }, [])
+
+  console.log('data is', budget)
+  console.log('newbud data is', newBud)
 
   return (
     <Layout user={user} loading={loading}>
@@ -23,55 +33,7 @@ export default function Home({ data }) {
         </>
       )}
 
-      {user &&
-        data.map(d => {
-          console.log('this is data', d)
-          return (
-            <Fragment key={d.id}>
-              <Col xl={12}>
-                <Card style={{ width: '18rem' }}>
-                  <Card.Body>
-                    <Card.Title className='text-center'>
-                      {d.fields.name}
-                    </Card.Title>
-                    <Card.Subtitle>
-                      Net income:
-                      <NumberFormat
-                        value={d.fields.netIncome}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'$'}
-                      />
-                    </Card.Subtitle>
-                    <Card.Subtitle>
-                      Net expenses:{' '}
-                      <NumberFormat
-                        value={d.fields.netExpenses}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'$'}
-                      />
-                    </Card.Subtitle>
-                    <Card.Text>
-                      This is a statement with the net income & expenses for{' '}
-                      {d.fields.name}
-                    </Card.Text>
-                    <Card.Footer>
-                      The End of month total was:{' '}
-                      <NumberFormat
-                        value={d.fields.endOfMonth}
-                        displayType={'text'}
-                        thousandSeparator={true}
-                        prefix={'$'}
-                      />
-                    </Card.Footer>
-                    <Button color='primary'>Go somewhere</Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Fragment>
-          )
-        })}
+      {user && <Data newBud={newBud} />}
     </Layout>
   )
 }
@@ -80,12 +42,6 @@ export async function getServerSideProps(context) {
   console.log('this is context', context.req.headers.referer)
   const res = await fetch(`http://localhost:3000/api/get-budget`)
   const data = await res.json()
-
-  if (!data) {
-    return {
-      notFound: true
-    }
-  }
 
   return {
     props: { data } // will be passed to the page component as props

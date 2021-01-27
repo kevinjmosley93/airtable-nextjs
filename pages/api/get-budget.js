@@ -3,9 +3,9 @@ import { table, minifyRecords } from '../../lib/airtable'
 export default async (req, res) => {
   try {
     const info = await table.select({}).firstPage()
-    const lilInfo = minifyRecords(info)
+    const formattedInfo = minifyRecords(info)
     res.statusCode = 200
-    res.json(lilInfo)
+    res.json(formattedInfo)
   } catch (err) {
     res.statusCode = 500
     res.json({

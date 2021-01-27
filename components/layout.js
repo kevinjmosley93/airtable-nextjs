@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import Header from './header'
+import Footer from './footer'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 function Layout({ user, loading = false, children }) {
@@ -14,6 +15,7 @@ function Layout({ user, loading = false, children }) {
       <main>
         <div className='container'>{children}</div>
       </main>
+      <Footer user={user} />
 
       <style jsx>{`
         .container {
