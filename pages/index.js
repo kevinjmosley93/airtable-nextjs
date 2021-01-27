@@ -1,18 +1,14 @@
+import { Fragment } from 'react'
 import Layout from '../components/layout'
 import { useFetchUser } from '../lib/user'
+import NumberFormat from 'react-number-format'
+import { Button, Card, Col, Row } from 'react-bootstrap'
 
 export default function Home({ data }) {
   const { user, loading } = useFetchUser()
 
   return (
     <Layout user={user} loading={loading}>
-      <h1>Next.js and Auth0 Example</h1>
-
-      {data.map(d => {
-        console.log('this is data', d)
-        return <h1 key={d.id}></h1>
-      })}
-
       {loading && <p>Loading login info...</p>}
 
       {!loading && !user && (
@@ -27,21 +23,62 @@ export default function Home({ data }) {
         </>
       )}
 
-      {user && (
-        <>
-          <h4>Rendered user info on the client</h4>
-          <img src={user.picture} alt='user picture' />
-          <p>nickname: {user.nickname}</p>
-          <p>name: {user.name}</p>
-        </>
-      )}
+      {user &&
+        data.map(d => {
+          console.log('this is data', d)
+          return (
+            <Fragment key={d.id}>
+              <Col xl={12}>
+                <Card style={{ width: '18rem' }}>
+                  <Card.Body>
+                    <Card.Title className='text-center'>
+                      {d.fields.name}
+                    </Card.Title>
+                    <Card.Subtitle>
+                      Net income:
+                      <NumberFormat
+                        value={d.fields.netIncome}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={'$'}
+                      />
+                    </Card.Subtitle>
+                    <Card.Subtitle>
+                      Net expenses:{' '}
+                      <NumberFormat
+                        value={d.fields.netExpenses}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={'$'}
+                      />
+                    </Card.Subtitle>
+                    <Card.Text>
+                      This is a statement with the net income & expenses for{' '}
+                      {d.fields.name}
+                    </Card.Text>
+                    <Card.Footer>
+                      The End of month total was:{' '}
+                      <NumberFormat
+                        value={d.fields.endOfMonth}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                        prefix={'$'}
+                      />
+                    </Card.Footer>
+                    <Button color='primary'>Go somewhere</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Fragment>
+          )
+        })}
     </Layout>
   )
 }
 
 export async function getServerSideProps(context) {
-  // console.log('this is context', context)
-  const res = await fetch(`${context.req.headers.referer}api/get-info`)
+  console.log('this is context', context.req.headers.referer)
+  const res = await fetch(`http://localhost:3000/api/get-budget`)
   const data = await res.json()
 
   if (!data) {
