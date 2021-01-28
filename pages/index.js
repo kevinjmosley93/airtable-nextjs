@@ -6,16 +6,27 @@ import { BudgetContext } from '../contexts/BudgetContext'
 
 export default function Home({ data }) {
   const { user, loading } = useFetchUser()
-  const { budget, setBudget, newBud, setNewBud, newBudget } = useContext(
+  const { budget, setBudget, newBudget, setNewBudget } = useContext(
     BudgetContext
   )
   useEffect(() => {
     setBudget(data)
-    budget.length > 0 && setNewBud(newBudget)
+    budget.map(res => {
+      const budgetData = {
+        id: res.id,
+        fields: {
+          endOfMonth: res.fields.endOfMonth,
+          netIncome: res.fields.netIncome,
+          netExpenses: res.fields.netExpenses,
+          name: res.fields.name
+        }
+      }
+      return setNewBudget(budgetData)
+    })
   }, [])
 
   console.log('data is', budget)
-  console.log('newbud data is', newBud)
+  console.log('newBudget data is', newBudget)
 
   return (
     <Layout user={user} loading={loading}>
@@ -33,7 +44,7 @@ export default function Home({ data }) {
         </>
       )}
 
-      {user && <Data newBud={newBud} />}
+      {user && <Data />}
     </Layout>
   )
 }

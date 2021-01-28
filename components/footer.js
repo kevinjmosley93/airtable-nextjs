@@ -8,8 +8,16 @@ export default function footer({ user }) {
       {user ? (
         <div className='footer-copyright py-3 text-center'>
           <div className='container-fluid'>
-            Thanks <span style={{ fontWeight: '700' }}>{user.given_name}</span>!
-            Keep Tracking Your Finances.
+            You are signed in as{' '}
+            <span
+              style={{
+                fontWeight: '700',
+                backgroundColor: 'black',
+                color: '#F8F9FA'
+              }}>
+              {user.given_name}
+            </span>
+            ! Keep Tracking Your Finances.
           </div>
         </div>
       ) : (

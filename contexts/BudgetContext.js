@@ -3,19 +3,7 @@ const BudgetContext = createContext()
 
 const BudgetProvider = ({ children }) => {
   const [budget, setBudget] = useState([])
-  const [newBud, setNewBud] = useState([])
-
-  const newBudget = budget.map(res => {
-    return {
-      id: res.id,
-      fields: {
-        endOfMonth: res.fields.endOfMonth,
-        netIncome: res.fields.netIncome,
-        netExpenses: res.fields.netExpenses,
-        name: res.fields.name
-      }
-    }
-  })
+  const [newBudget, setNewBudget] = useState([])
 
   const getBudget = async () => {
     try {
@@ -43,9 +31,8 @@ const BudgetProvider = ({ children }) => {
     <BudgetContext.Provider
       value={{
         budget,
-        newBud,
         newBudget,
-        setNewBud,
+        setNewBudget,
         setBudget,
         getBudget,
         addBudget
