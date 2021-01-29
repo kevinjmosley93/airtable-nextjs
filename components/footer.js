@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default function footer({ user }) {
-  console.log('this is footer user', user)
   const currentYear = new Date().getFullYear()
   return (
     <footer className='page-footer text-center text-md-left pt-4'>
@@ -15,7 +14,7 @@ export default function footer({ user }) {
                 backgroundColor: 'black',
                 color: '#F8F9FA'
               }}>
-              {user.given_name}
+              {user.name}
             </span>
             ! Keep Tracking Your Finances.
           </div>

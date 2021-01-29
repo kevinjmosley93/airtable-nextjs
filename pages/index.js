@@ -1,32 +1,19 @@
 import { useContext, useEffect } from 'react'
 import Layout from '../components/layout'
 import { useFetchUser } from '../lib/user'
-import Data from '../components/data'
+import LineChart from '../components/lineChart'
 import { BudgetContext } from '../contexts/BudgetContext'
+import Card from '../components/card'
 
 export default function Home({ data }) {
   const { user, loading } = useFetchUser()
-  const { budget, setBudget, newBudget, setNewBudget } = useContext(
-    BudgetContext
-  )
+  const { budget, setBudget, sortedBudget } = useContext(BudgetContext)
   useEffect(() => {
     setBudget(data)
-    budget.map(res => {
-      const budgetData = {
-        id: res.id,
-        fields: {
-          endOfMonth: res.fields.endOfMonth,
-          netIncome: res.fields.netIncome,
-          netExpenses: res.fields.netExpenses,
-          name: res.fields.name
-        }
-      }
-      return setNewBudget(budgetData)
-    })
-  }, [])
+  }, [budget])
 
-  console.log('data is', budget)
-  console.log('newBudget data is', newBudget)
+  console.log('data is', sortedBudget)
+  // console.log('newBudget data is', newBudget)
 
   return (
     <Layout user={user} loading={loading}>
@@ -44,7 +31,12 @@ export default function Home({ data }) {
         </>
       )}
 
-      {user && <Data />}
+      {user && (
+        <>
+          <Card />
+          <LineChart />
+        </>
+      )}
     </Layout>
   )
 }
